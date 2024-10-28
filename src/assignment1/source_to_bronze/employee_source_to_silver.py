@@ -1,5 +1,5 @@
 from databricks_assignment.src.assignment1.util import *
-%run "/Users/lakshmi.devigaddam@diggibyte.com/databricks_assignment/source_to_bronze/util"
+%run "/Users/mythilipriya5012@gmail.com/databricks_assignment/source_to_bronze/util"
 employee_read_path ='dbfs:/FileStore/resource/Employee_Q1.csv'
 department_read_path ='dbfs:/FileStore/resource/Department_Q1.csv'
 country_read_path ='dbfs:/FileStore/resource/Country_Q1.csv'

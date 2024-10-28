@@ -1,31 +1,33 @@
-from pyspark.sql.functions import *
-
-def read_csv(path):
-  df = spark.read.csv(path, header=True, inferSchema=True)
-  return df
-
-# COMMAND ----------
-
-def write_csv(df, path):
-  df.write.format('csv').save(path)
-
-def read_with_custom_schema(data, schema):
-    df = spark.read.csv(data, schema)
-    return df
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import current_date, col
+from pyspark.sql.types import StructType
 
 
+spark = SparkSession.builder.appName("CSV Processing").getOrCreate()
 
-def read_with_custom_schema_format(data, schema):
-    df = spark.read.format('csv').schema(schema).load(data)
-    return df
+def read_csv(path: str):
 
-# DBTITLE 1,Camel to Snake case
+    return spark.read.csv(path, header=True, inferSchema=True)
+
+def write_csv(df, path: str):
+
+    df.write.format('csv').save(path)
+
+def read_with_custom_schema(data: str, schema: StructType):
+
+    return spark.read.csv(data, schema=schema)
+
+def read_with_custom_schema_format(data: str, schema: StructType):
+
+    return spark.read.format('csv').schema(schema).load(data)
+
 def camel_to_snake_case(df):
-    for cols in df.columns:
-        df = df.withColumnRenamed(cols, cols.lower())
+
+    for col_name in df.columns:
+        new_col_name = col_name.replace(" ", "_").lower()
+        df = df.withColumnRenamed(col_name, new_col_name)
     return df
 
-udf(camel_to_snake_case)
 def add_current_date(df):
-    df = df.withColumn("load_date", current_date())
-    return df
+
+    return df.withColumn("load_date", current_date())
